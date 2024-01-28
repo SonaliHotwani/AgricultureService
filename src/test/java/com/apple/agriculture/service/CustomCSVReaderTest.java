@@ -29,6 +29,9 @@ class CustomCSVReaderTest {
     @Test
     public void shouldReadCsvDataAndLoadInDB() throws SQLException {
         Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
+        String deleteSql = "DELETE from AGRICULTURE_CROP_PRODUCTION";
+        PreparedStatement deleteStatement = connection.prepareStatement(deleteSql);
+        deleteStatement.execute();
         customCSVReader.readAndLoadInDB("src/test/resources/sampleProductionData.csv");
         String sql = "SELECT * from AGRICULTURE_CROP_PRODUCTION";
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
@@ -37,7 +40,7 @@ class CustomCSVReaderTest {
         while (resultSet.next()) {
             count++;
         }
-        assertEquals(5, count);
+        assertEquals(4, count);
     }
 
 }

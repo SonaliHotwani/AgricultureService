@@ -45,7 +45,6 @@
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.26</version>
-            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
@@ -57,7 +56,5 @@
             <artifactId>opencsv</artifactId>
             <version>5.7.1</version>
         </dependency>
-
     </dependencies>
-
 </project>

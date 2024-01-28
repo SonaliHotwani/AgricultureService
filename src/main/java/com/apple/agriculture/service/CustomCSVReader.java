@@ -22,9 +22,11 @@ import java.util.List;
 public class CustomCSVReader {
 
     private final AgricultureCropProductionRepository repository;
+    private final ProductionConverter productionConverter;
 
-    public CustomCSVReader(AgricultureCropProductionRepository repository) {
+    public CustomCSVReader(AgricultureCropProductionRepository repository, ProductionConverter productionConverter) {
         this.repository = repository;
+        this.productionConverter = productionConverter;
     }
 
     public void readAndLoadInDB(String filePath) throws SQLException {
@@ -43,8 +45,10 @@ public class CustomCSVReader {
                 agricultureCropProduction.setArea(area);
                 agricultureCropProduction.setAreaUnit(AreaUnit.valueOf(line[6]));
                 BigDecimal production = StringUtils.isEmpty(line[7]) ? BigDecimal.valueOf(0) : new BigDecimal(line[7]);
-                agricultureCropProduction.setProduction(production);
-                agricultureCropProduction.setProductionUnit(ProductionUnit.valueOf(line[8]));
+                ProductionUnit productionUnit = ProductionUnit.valueOf(line[8]);
+                BigDecimal productionInTonnes = productionConverter.getProductionInTonnes(production, productionUnit);
+                agricultureCropProduction.setProduction(productionInTonnes);
+                agricultureCropProduction.setProductionUnit(ProductionUnit.Tonnes);
                 BigDecimal yield = StringUtils.isEmpty(line[9]) ? BigDecimal.valueOf(0) : new BigDecimal(line[9]);
                 agricultureCropProduction.setYield(yield);
                 cropProductions.add(agricultureCropProduction);
